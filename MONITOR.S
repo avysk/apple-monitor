@@ -1,7 +1,7 @@
 ; Output a character in the accumulator using routine with address
 ; in $36 and $37
-
 COUT    EQU     $FDED
+
 ; Output a character in the accumulator to the current position on the screen,
 ; and advance the cursor. Return, line feed, bell, and control characters are
 ; handled properly.
@@ -25,11 +25,11 @@ CROUT1  EQU     $FD8B
 
 ; Output a hexadecimal representation of the value in the accumulator.
 ; A is corrupted.
-PRBYTE   EQU     $FDDA
+PRBYTE  EQU     $FDDA
 
 ; Output a hexadecimal representation of the low nibble of A.
 ; A is corrupted.
-PRHEX    EQU     $FDE3
+PRHEX   EQU     $FDE3
 
 ; Output a hexadecimal representation of the value in the A and X registers as
 ; a 4-digit hexadecimal number.
