@@ -1,3 +1,5 @@
+;;; Output subroutines
+
 ; Output a character in the accumulator using routine with address
 ; in $36 and $37
 COUT    EQU     $FDED
@@ -52,13 +54,15 @@ BELL    EQU     $FF3A
 ; A and X are corrupted.
 BELL1   EQU     $FBDD
 
+;;; Input subroutines
+
 ; Put a flashing input cursor at the current position of output cursor and uses
 ; subroutine with address in $38 and $39 (usually KEYIN) to read a character.
 RDKEY   EQU     $FD0C
 
 ; Alternative input routine that reads a character from the standard input but
 ; also interprets some escape codes
-RDCH    EQU     $FD35
+RDCHAR  EQU     $FD35
 
 ; Read a character from keyboard (will be returned in A) and also removes a
 ; flashing input cursor and randomizes the random number seed
@@ -75,9 +79,7 @@ GETLNZ  EQU     $FD67
 ; Same as GETLN, but the prompt character is not used
 GETLN1  EQU     $FD6F
 
-; For the given value of the accumulator, sleep 1/4 (26+27*A+5*A*A) miliseconds
-; X and Y are preserved, $0 -> A.
-WAIT    EQU     $FCA8
+;;; Low-Res graphic subroutines
 
 ; Sets the low-res graphics color to the value in the accumulator.
 SETCOL  EQU     $F864
@@ -112,6 +114,57 @@ CLRTOP  EQU     $F836
 ; taken from A, the horizontal one from Y. The color is returned in A
 ; X and Y are preserved.
 SCRN    EQU     $F871
+
+;;; Hi-Res graphic subroutines
+
+; Initiolize hi-res page 1 and clear and display screen
+HGR     EQU     $F3E2
+
+; Initiolize hi-res page 2 and clear and display screen
+HGR2    EQU     $F3D8
+
+; Clear the current screen to black1
+HCLR    EQU     $F3F2
+
+; Clear the current screen to the last plotted HCOLOR
+BKGND   EQU     $F3F6
+
+; Set the current HCOLOR to the contents of the X register (0-7)
+HCOLOR  EQU     $F6F0
+
+; Position the hi-res "cursor" to the position, specified in X, Y (low, high)
+; horizontally and in A vertically
+HPOSN   EQU     $F411
+
+; Plot; as HPOSN but plot current HCOLOR at the position given
+HPLOT   EQU     $F457
+
+; Return the current "cursor" position.
+; Horizontal coordinate is returned in $E0, $E1 (low, high) and vertical
+; coordinate is returned in $E2
+HFIND   EQU     $F5CB
+
+; Draw a line from the previous plot to the point given. The horizontal
+; coordinate should be set in A, X (low, high) and vertical in Y
+HLIN    EQU     $F53A
+
+; Puts the address of the shape number indicated by X into $1A, $1B.
+; X, Y (low, high) are also set to this address.
+; see DRAW and XDRAW
+SHNUM   EQU     $F730
+
+; Draw a shape pointed to by X, Y (low, high) in the current HCOLOR. Use SHNUM
+; first to set X and Y
+DRAW    EQU     $F601
+
+; Erase a shape by drawing it using XOR. Otherwise works like DRAW.
+XDRAW   EQU     $F65D
+
+;;; Other subroutines
+
+; For the given value of the accumulator, sleep 1/4 (26+27*A+5*A*A) miliseconds
+; X and Y are preserved, $0 -> A.
+WAIT    EQU     $FCA8
 
 ; Read value of a game controller (0-3) whose number is passed in X. A number
 ; from $00 to $FF is returned in Y
